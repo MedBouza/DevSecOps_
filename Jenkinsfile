@@ -138,3 +138,4 @@ stage('Docker Image Scan') {
     }*/
   }
 }
+}
