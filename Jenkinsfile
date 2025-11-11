@@ -64,6 +64,7 @@ stage('Docker Image Scan') {
     sh 'gitleaks detect --source . --exit-code 1'
   }
 }
+  }
    /* stage('Générer rapports') {
       steps {
         sh 'gitleaks detect --source . --report-path gitleaks-report.json'
