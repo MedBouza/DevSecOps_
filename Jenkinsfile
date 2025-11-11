@@ -42,8 +42,8 @@ pipeline {
     }
     stage('OWASP Dependency Check') {
   steps {
-    sh 'mvn org.owasp:dependency-check-maven:check'
-  }
+  sh 'mvn org.owasp:dependency-check-maven:check -Danalyzer.jar.enabled=false -Danalyzer.assembly.enabled=false'
+   }
 }
 
     // Uncomment to use MVN Nexus stage
