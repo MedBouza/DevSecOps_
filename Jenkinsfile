@@ -50,24 +50,19 @@ pipeline {
     }
     */
 
-    stage('Docker Image Stage') {
-      steps {
-        sh """
-          # Login to Docker
-          docker login -u anisbm3 -p 25/01/2003
-          
-          # Pull image to make sure it's available locally
-          docker pull anisbm3/anisbenmehrez-4twin2-g4-stationski:1.0.0
-          
-          # Tag the pulled image with a new tag
-          docker tag anisbm3/anisbenmehrez-4twin2-g4-stationski:1.0.0 anisbm3/anisbenmehrez-4twin2-g4-stationski:new-tag
-          
-          # Push the image with the new tag
-          docker push anisbm3/anisbenmehrez-4twin2-g4-stationski:new-tag
-        """
-      }
+/*stage('Docker Image Stage') {
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+      sh """
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker pull yourusername/myproject:latest
+        docker tag yourusername/myproject:latest yourusername/myproject:new-tag
+        docker push yourusername/myproject:new-tag
+      """
     }
-
+  }
+}
+*/
     stage('Run Docker Compose') {
       steps {
         sh '''
