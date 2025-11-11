@@ -64,6 +64,35 @@ stage('Docker Image Scan') {
     sh 'gitleaks detect --source . --exit-code 1'
   }
 }
+   /* stage('Générer rapports') {
+      steps {
+        sh 'gitleaks detect --source . --report-path gitleaks-report.json'
+        sh 'mvn org.owasp:dependency-check-maven:check'
+        archiveArtifacts artifacts: 'gitleaks-report.json, target/dependency-check-report.html', allowEmptyArchive: true
+      }
+    }
+  }*/
+  post {
+    always {
+            sh 'gitleaks detect --source . --report-path gitleaks-report.json'
+        sh 'mvn org.owasp:dependency-check-maven:check'
+       archiveArtifacts artifacts: 'gitleaks-report.json, target/dependency-check-report.html', allowEmptyArchive: true
+    }
+    success {
+      mail(
+        to: 'medbouza200@gmail.com',
+        subject: "Build Succeeded: ${env.JOB_NAME}",
+        body: "Success: ${env.BUILD_URL}"
+      )
+    }
+    failure {
+      mail(
+        to: 'medbouza200@gmail.com',
+        subject: "Build Failed: ${env.JOB_NAME}",
+        body: "See details: ${env.BUILD_URL}"
+      )
+    }
+
     // Uncomment to use MVN Nexus stage
     /*
     stage('MVN Nexus') {
