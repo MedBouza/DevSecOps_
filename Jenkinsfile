@@ -40,6 +40,11 @@ pipeline {
         }
       }
     }
+    stage('OWASP Dependency Check') {
+  steps {
+    sh 'mvn org.owasp:dependency-check-maven:check'
+  }
+}
 
     // Uncomment to use MVN Nexus stage
     /*
