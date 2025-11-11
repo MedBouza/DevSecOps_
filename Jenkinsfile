@@ -54,7 +54,7 @@ stage('Docker Image Scan') {
       do
         if [ "$image" != "hello-world:latest" ]; then
           echo "⏳ Scanning $image ..."
-          docker run --rm aquasec/trivy image "$image"
+          docker run --rm aquasec/trivy image --timeout 5m "$image"
         else
           echo "⏭️ Skipping $image"
         fi
