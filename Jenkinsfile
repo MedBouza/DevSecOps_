@@ -49,7 +49,17 @@ stage('Docker Image Scan') {
   steps {
     //sh 'trivy image myimage:latest'     // If Trivy is installed natively
     // Or, via Docker:
-     sh 'docker run --rm -v $PWD:/project aquasec/trivy image myimage:latest'
+    sh '''
+      for image in $(docker images --format "{{.Repository}}:{{.Tag}}")
+      do
+        if [ "$image" != "hello-world:latest" ]; then
+          echo "⏳ Scanning $image ..."
+          docker run --rm aquasec/trivy image "$image"
+        else
+          echo "⏭️ Skipping $image"
+        fi
+      done
+    '''
     sh 'trivy fs --exit-code 1 --severity CRITICAL,HIGH .'
 
   }
