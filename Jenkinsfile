@@ -45,7 +45,15 @@ pipeline {
   sh 'mvn org.owasp:dependency-check-maven:check -Danalyzer.jar.enabled=false -Danalyzer.assembly.enabled=false'
    }
 }
+stage('Docker Image Scan') {
+  steps {
+    //sh 'trivy image myimage:latest'     // If Trivy is installed natively
+    // Or, via Docker:
+     sh 'docker run --rm -v $PWD:/project aquasec/trivy image myimage:latest'
+    sh 'trivy fs --exit-code 1 --severity CRITICAL,HIGH .'
 
+  }
+}
     // Uncomment to use MVN Nexus stage
     /*
     stage('MVN Nexus') {
