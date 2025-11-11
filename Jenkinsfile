@@ -59,6 +59,11 @@ stage('Docker Image Scan') {
     '''
   }
 }
+    stage('Secrets Scan') {
+  steps {
+    sh 'gitleaks detect --source . --exit-code 1'
+  }
+}
     // Uncomment to use MVN Nexus stage
     /*
     stage('MVN Nexus') {
