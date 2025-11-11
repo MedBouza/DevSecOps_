@@ -63,7 +63,7 @@ pipeline {
   }
 }
 */
-    stage('Run Docker Compose') {
+    /*stage('Run Docker Compose') {
       steps {
         sh '''
           echo "🔧 Démarrage des services avec Docker Compose..."
@@ -83,6 +83,6 @@ pipeline {
           fi
         '''
       }
-    }
+    }*/
   }
 }
