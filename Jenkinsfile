@@ -87,3 +87,4 @@ stage('Run Docker Compose') {
 
   }
 }
+}
