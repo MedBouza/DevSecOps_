@@ -72,7 +72,7 @@ stage('Docker Image Scan') {
         archiveArtifacts artifacts: 'gitleaks-report.json, target/dependency-check-report.html', allowEmptyArchive: true
       }
     }
-  }*//*aaaabbbbbcccccdddddeeeeffffffgggg*/
+  }*//*aaaabbbbbcccccdddddeeeeffffffgggghhhhh*/
   post {
     always {
             sh 'gitleaks detect --source . --report-path gitleaks-report.json'
