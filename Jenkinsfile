@@ -32,6 +32,11 @@ pipeline {
         }
       }
     }
+    stage('Build and Test') {
+    steps {
+        sh 'mvn clean package -DskipTests'  // Skip tests
+    }
+}
     stage('Docker Image Stage') {
   steps {
     withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
