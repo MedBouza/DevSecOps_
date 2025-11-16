@@ -161,10 +161,10 @@ public class SubscriptionServiceTest {
         List<Subscription> resultList = new ArrayList<>(result);
         assertTrue(resultList.get(0).getStartDate().isBefore(resultList.get(1).getStartDate()));
     }
-    @BeforeEach
-    public void clearDatabase() {
-        subscriptionRepository.deleteAll();
-    }
+    //@BeforeEach
+    //public void clearDatabase() {
+    //    subscriptionRepository.deleteAll();
+    //}
     @Test
     void testRetrieveSubscriptionsByDates() {
         // Nettoyer les données existantes
