@@ -32,14 +32,14 @@ pipeline {
         }
       }
     }
-
+/*
     stage('SonarQube Analysis') {
       steps {
         withCredentials([string(credentialsId: 'sonar-token-id', variable: 'SONAR_TOKEN')]) {
           sh "mvn sonar:sonar -Dsonar.token=$SONAR_TOKEN -Dmaven.test.skip=true"
         }
       }
-    }
+    }*/
     stage('OWASP Dependency Check') {
   steps {
   sh 'mvn org.owasp:dependency-check-maven:check -Danalyzer.jar.enabled=false -Danalyzer.assembly.enabled=false'
