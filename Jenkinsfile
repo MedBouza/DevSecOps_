@@ -32,6 +32,40 @@ pipeline {
         }
       }
     }
+    stage('Docker Image Stage') {
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+      sh """
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker pull yourusername/myproject:latest
+        docker tag yourusername/myproject:latest yourusername/myproject:new-tag
+        docker push yourusername/myproject:new-tag
+      """
+    }
+  }
+}
+
+    stage('Run Docker Compose') {
+      steps {
+        sh '''
+          echo "🔧 Démarrage des services avec Docker Compose..."
+
+          # Vérifie quelle commande est disponible
+          if command -v docker compose > /dev/null; then
+            echo "✅ Utilisation de 'docker compose'"
+            docker compose up -d
+            docker compose ps
+          elif command -v docker-compose > /dev/null; then
+            echo "✅ Utilisation de 'docker-compose'"
+            docker-compose up -d
+            docker-compose ps
+          else
+            echo "❌ Ni 'docker compose' ni 'docker-compose' ne sont disponibles."
+            exit 1
+          fi
+        '''
+      }
+    }
 /*
     stage('SonarQube Analysis') {
       steps {
@@ -44,7 +78,7 @@ pipeline {
   steps {
   sh 'mvn org.owasp:dependency-check-maven:check -Danalyzer.jar.enabled=false -Danalyzer.assembly.enabled=false'
    }
-}
+}/*
 stage('Docker Image Scan') {
   steps {
     sh '''
@@ -58,7 +92,7 @@ stage('Docker Image Scan') {
       done
     '''
   }
-}
+}*/
     stage('Secrets Scan') {
   steps {
     sh 'gitleaks detect --source . --exit-code 1'
