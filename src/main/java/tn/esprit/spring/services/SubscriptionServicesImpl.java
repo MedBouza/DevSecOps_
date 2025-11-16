@@ -25,27 +25,24 @@ public class SubscriptionServicesImpl implements ISubscriptionServices {
     @Override
     public Subscription addSubscription(Subscription subscription) {
         log.info("Adding new subscription: {}", subscription);
-        try {
-            switch (subscription.getTypeSub()) {
-                case ANNUAL:
-                    subscription.setEndDate(subscription.getStartDate().plusYears(1));
-                    break;
-                case SEMESTRIEL:
-                    subscription.setEndDate(subscription.getStartDate().plusMonths(6));
-                    break;
-                case MONTHLY:
-                    subscription.setEndDate(subscription.getStartDate().plusMonths(1));
-                    break;
-                default:
-                    log.warn("Unknown subscription type: {}", subscription.getTypeSub());
-            }
-            Subscription savedSub = subscriptionRepository.save(subscription);
-            log.info("Subscription added successfully: {}", savedSub);
-            return savedSub;
-        } catch (Exception e) {
-            log.error("Error while adding subscription", e);
-            return null;
+        // compute end date depending on type
+        switch (subscription.getTypeSub()) {
+            case ANNUAL:
+                subscription.setEndDate(subscription.getStartDate().plusYears(1));
+                break;
+            case SEMESTRIEL:
+                subscription.setEndDate(subscription.getStartDate().plusMonths(6));
+                break;
+            case MONTHLY:
+                subscription.setEndDate(subscription.getStartDate().plusMonths(1));
+                break;
+            default:
+                log.warn("Unknown subscription type: {}", subscription.getTypeSub());
         }
+        // Let exceptions propagate so tests/CI can surface DB/schema errors instead of producing NPEs later
+        Subscription savedSub = subscriptionRepository.save(subscription);
+        log.info("Subscription added successfully: {}", savedSub);
+        return savedSub;
     }
 
     @Override
